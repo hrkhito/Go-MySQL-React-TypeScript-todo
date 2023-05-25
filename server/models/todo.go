@@ -2,9 +2,13 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
+	"log"
+	"os"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 type TodoModel struct {
@@ -12,7 +16,20 @@ type TodoModel struct {
 }
 
 func NewTodoModel() *TodoModel {
-	db, err := sql.Open("mysql", "root:hrk_database@tcp(localhost:3306)/todo_app")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, dbName)
+
+	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		panic(err)
 	}
