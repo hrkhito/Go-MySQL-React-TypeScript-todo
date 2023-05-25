@@ -17,7 +17,7 @@ enum TodoView {
   Uncompleted,
 }
 
-const TodoList: React.FC = ()=> {
+const TodoList = () => {
   const [todos, setTodos] = useState<Todo[] | null>([]);
   const [todoView, setTodoView] = useState<TodoView>(TodoView.All);
   const [isMaxTodos, setIsMaxTodos] = useState(false);
@@ -25,11 +25,11 @@ const TodoList: React.FC = ()=> {
   const [description, setDescription] = useState("");
   const [updatingTodoId, setUpdatingTodoId] = useState<number | null>(null);
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchTodos();
   }, []);
 
-  const fetchTodos = ()=> {
+  const fetchTodos = () => {
     axios.get('http://localhost:8080/todos')
     .then((response) => {
       setTodos(response.data);
@@ -41,7 +41,7 @@ const TodoList: React.FC = ()=> {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent)=> {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isMaxTodos) {
       alert('Cannot add more than 10 todos');
@@ -53,7 +53,7 @@ const TodoList: React.FC = ()=> {
         description,
         completed: false,
       })
-      .then(()=> {
+      .then(() => {
         setTitle("");
         setDescription("");
         setUpdatingTodoId(null);
